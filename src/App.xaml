@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Application
+    x:Class="Wiretap.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Wiretap">
+    
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <!-- Other merged dictionaries here -->
+            </ResourceDictionary.MergedDictionaries>
+            
+            <!-- 
+            GLOBAL WINUI 3 THEME CONFIGURATION
+            
+            These resource keys are used by ALL WinUI 3 controls globally.
+            Changing these will theme buttons, ComboBoxes, NumberBoxes, etc.
+            -->
+            
+            <!-- ========== PRIMARY ACCENT COLOR SYSTEM ========== -->
+            <!-- Base accent color - used for primary buttons, selected items, focus rings -->
+            <Color x:Key="SystemAccentColor">DodgerBlue</Color>
+            <Color x:Key="SystemAccentColorLight1">#4169E1</Color>
+            <Color x:Key="SystemAccentColorLight2">#6495ED</Color>
+            <Color x:Key="SystemAccentColorLight3">#87CEEB</Color>
+            <Color x:Key="SystemAccentColorDark1">#1E90FF</Color>
+            <Color x:Key="SystemAccentColorDark2">#0066CC</Color>
+            <Color x:Key="SystemAccentColorDark3">#004499</Color>
+            
+            <!-- ========== TRANSPARENT ACCENT COLORS ========== -->
+            <!-- Predefined transparent versions for selection states -->
+            <Color x:Key="SystemAccentColorTransparent40">#661E90FF</Color>
+            <Color x:Key="SystemAccentColorTransparent60">#991E90FF</Color>
+            <Color x:Key="SystemAccentColorTransparent80">#CC1E90FF</Color>
+            <Color x:Key="SystemAccentColorTransparent28">#471E90FF</Color>
+            
+            <!-- ========== ACCENT FILL BRUSHES ========== -->
+            <!-- Used by primary buttons, accent buttons, selected states -->
+            <SolidColorBrush x:Key="AccentFillColorDefaultBrush" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="AccentFillColorSecondaryBrush" Color="{StaticResource SystemAccentColorLight1}" />
+            <SolidColorBrush x:Key="AccentFillColorTertiaryBrush" Color="{StaticResource SystemAccentColorLight2}" />
+            <SolidColorBrush x:Key="AccentFillColorDisabledBrush" Color="{StaticResource SystemAccentColorTransparent28}" />
+            
+            <!-- ========== ACCENT TEXT BRUSHES ========== -->
+            <!-- Used for accent-colored text -->
+            <SolidColorBrush x:Key="AccentTextFillColorPrimaryBrush" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="AccentTextFillColorSecondaryBrush" Color="{StaticResource SystemAccentColorLight1}" />
+            <SolidColorBrush x:Key="AccentTextFillColorTertiaryBrush" Color="{StaticResource SystemAccentColorLight2}" />
+            <SolidColorBrush x:Key="AccentTextFillColorDisabledBrush" Color="{StaticResource SystemAccentColorTransparent28}" />
+            
+            <!-- ========== SYSTEM CONTROL BRUSHES ========== -->
+            <!-- Used by system controls for highlighting and accent states -->
+            <SolidColorBrush x:Key="SystemControlHighlightAccentBrush" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="SystemControlHighlightAltAccentBrush" Color="{StaticResource SystemAccentColorLight1}" />
+            <SolidColorBrush x:Key="SystemControlHighlightBaseHighBrush" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="SystemControlHighlightBaseMediumHighBrush" Color="{StaticResource SystemAccentColorLight1}" />
+            
+            <!-- ========== BUTTON ACCENT BRUSHES ========== -->
+            <!-- Used specifically for accent buttons -->
+            <SolidColorBrush x:Key="AccentButtonBackground" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="AccentButtonBackgroundPointerOver" Color="{StaticResource SystemAccentColorLight1}" />
+            <SolidColorBrush x:Key="AccentButtonBackgroundPressed" Color="{StaticResource SystemAccentColorDark1}" />
+            <SolidColorBrush x:Key="AccentButtonBackgroundDisabled" Color="{StaticResource SystemAccentColorTransparent28}" />
+            
+            <!-- ========== HYPERLINK BRUSHES ========== -->
+            <!-- Used for hyperlinks and link-style buttons -->
+            <SolidColorBrush x:Key="HyperlinkForeground" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="HyperlinkForegroundPointerOver" Color="{StaticResource SystemAccentColorLight1}" />
+            <SolidColorBrush x:Key="HyperlinkForegroundPressed" Color="{StaticResource SystemAccentColorDark1}" />
+            <SolidColorBrush x:Key="HyperlinkForegroundDisabled" Color="{StaticResource SystemAccentColorTransparent28}" />
+            
+            <!-- ========== SELECTION AND FOCUS BRUSHES ========== -->
+            <!-- Used for selected items in lists, focus rings, etc. -->
+            <SolidColorBrush x:Key="ListViewItemBackgroundSelected" Color="{StaticResource SystemAccentColorTransparent40}" />
+            <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPointerOver" Color="{StaticResource SystemAccentColorTransparent60}" />
+            <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPressed" Color="{StaticResource SystemAccentColorTransparent80}" />
+            
+            <!-- ========== COMBOBOX ACCENT BRUSHES ========== -->
+            <!-- Used for ComboBox selection and highlighting -->
+            <SolidColorBrush x:Key="ComboBoxItemBackgroundSelected" Color="{StaticResource SystemAccentColorTransparent40}" />
+            <SolidColorBrush x:Key="ComboBoxItemBackgroundSelectedPointerOver" Color="{StaticResource SystemAccentColorTransparent60}" />
+            <SolidColorBrush x:Key="ComboBoxItemBackgroundSelectedPressed" Color="{StaticResource SystemAccentColorTransparent80}" />
+            <SolidColorBrush x:Key="ComboBoxItemForegroundSelected" Color="{StaticResource SystemAccentColor}" />
+            
+            <!-- ========== SLIDER AND PROGRESS BRUSHES ========== -->
+            <!-- Used for sliders, progress bars, and other value controls -->
+            <SolidColorBrush x:Key="SliderTrackValueFill" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="SliderTrackValueFillPointerOver" Color="{StaticResource SystemAccentColorLight1}" />
+            <SolidColorBrush x:Key="SliderTrackValueFillPressed" Color="{StaticResource SystemAccentColorDark1}" />
+            <SolidColorBrush x:Key="SliderThumbBackground" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="ProgressBarForeground" Color="{StaticResource SystemAccentColor}" />
+            
+            <!-- ========== CHECKBOX AND RADIO BUTTON BRUSHES ========== -->
+            <!-- Used for checkboxes and radio buttons in checked state -->
+            <SolidColorBrush x:Key="CheckBoxCheckGlyphForegroundChecked" Color="White" />
+            <SolidColorBrush x:Key="CheckBoxBackgroundChecked" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="CheckBoxBackgroundCheckedPointerOver" Color="{StaticResource SystemAccentColorLight1}" />
+            <SolidColorBrush x:Key="CheckBoxBackgroundCheckedPressed" Color="{StaticResource SystemAccentColorDark1}" />
+            <SolidColorBrush x:Key="CheckBoxBorderBrushChecked" Color="{StaticResource SystemAccentColor}" />
+            
+            <SolidColorBrush x:Key="RadioButtonOuterEllipseChecked" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="RadioButtonOuterEllipseCheckedPointerOver" Color="{StaticResource SystemAccentColorLight1}" />
+            <SolidColorBrush x:Key="RadioButtonOuterEllipseCheckedPressed" Color="{StaticResource SystemAccentColorDark1}" />
+            <SolidColorBrush x:Key="RadioButtonCheckGlyph" Color="{StaticResource SystemAccentColor}" />
+            
+            <!-- ========== TOGGLE SWITCH BRUSHES ========== -->
+            <!-- Used for toggle switches in on state -->
+            <SolidColorBrush x:Key="ToggleSwitchStrokeOn" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="ToggleSwitchStrokeOnPointerOver" Color="{StaticResource SystemAccentColorLight1}" />
+            <SolidColorBrush x:Key="ToggleSwitchStrokeOnPressed" Color="{StaticResource SystemAccentColorDark1}" />
+            <SolidColorBrush x:Key="ToggleSwitchFillOn" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="ToggleSwitchFillOnPointerOver" Color="{StaticResource SystemAccentColorLight1}" />
+            <SolidColorBrush x:Key="ToggleSwitchFillOnPressed" Color="{StaticResource SystemAccentColorDark1}" />
+            
+            <!-- ========== TEXT SELECTION BRUSHES ========== -->
+            <!-- Used for text selection in TextBox, RichEditBox, etc. -->
+            <SolidColorBrush x:Key="TextSelectionHighlightColorBrush" Color="{StaticResource SystemAccentColorTransparent60}" />
+            <SolidColorBrush x:Key="TextControlSelectionHighlightColor" Color="{StaticResource SystemAccentColorTransparent60}" />
+            
+            <!-- ========== FOCUS VISUAL BRUSHES ========== -->
+            <!-- Used for keyboard focus indicators -->
+            <SolidColorBrush x:Key="SystemControlFocusVisualPrimaryBrush" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="SystemControlFocusVisualSecondaryBrush" Color="{StaticResource SystemAccentColorLight1}" />
+            
+            <!-- Other app resources here -->
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

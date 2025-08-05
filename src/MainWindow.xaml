@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="Wiretap.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:views="using:Wiretap.Views"
+    xmlns:converters="using:Wiretap.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Wiretap">
+
+    <Window.SystemBackdrop>
+        <MicaBackdrop />
+    </Window.SystemBackdrop>
+
+    <Grid Margin="20" KeyDown="MainWindow_KeyDown">
+        <Grid.Resources>
+            <converters:StatusToBrushConverter x:Key="StatusToBrushConverter" />
+            <converters:ConnectionButtonTextConverter x:Key="ConnectionButtonTextConverter" />
+            <converters:ConnectionButtonBackgroundConverter x:Key="ConnectionButtonBackgroundConverter" />
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+        </Grid.Resources>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="400" />
+        </Grid.ColumnDefinitions>
+        
+        <!-- Messages View Component -->
+        <views:MessagesView x:Name="MessagesViewControl" 
+                           Grid.Column="0" 
+                           ViewModel="{x:Bind ViewModel, Mode=OneWay}"
+                           ScrollToTopRequested="OnScrollToTopRequested"
+                           ClearMessagesRequested="OnClearMessagesRequested"
+                           MessageSelected="OnMessageSelected" />
+        
+        <!-- Listeners View Component -->
+        <views:ListenersView x:Name="ListenersViewControl" 
+                            Grid.Column="2" 
+                            ViewModel="{x:Bind ViewModel, Mode=OneWay}"
+                            AddListenerRequested="OnAddListenerRequested"
+                            SettingsRequested="OnSettingsRequested"
+                            RemoveListenerRequested="OnRemoveListenerRequested"
+                            ToggleListenerRequested="OnToggleListenerRequested"
+                            PlayStopRequested="OnPlayStopRequested" />
+    </Grid>
+</Window>

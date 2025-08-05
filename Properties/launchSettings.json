@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Wiretap (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Wiretap (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
