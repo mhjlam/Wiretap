@@ -1,32 +1,36 @@
 # Wiretap
 
-Wiretap is a Windows 11 application for monitoring real-time data from multiple sources. It supports TCP/UDP networks, named pipes, serial COM ports, and USB devices. The application provides a unified interface for capturing and analyzing data streams, with features such as device filtering, efficient device enumeration, and a WinUI 3-based interface. Wiretap is suitable for tasks including debugging network protocols, monitoring serial and USB devices, and working with embedded hardware interfaces.
+Wiretap is a `Windows 11` application for monitoring real-time data from multiple sources. It supports `TCP`/`UDP` networks, named `pipes`, serial `COM` ports, and `USB` devices. 
+
+Wiretap is suitable for tasks including debugging network protocols, monitoring serial and USB devices, and working with embedded hardware interfaces.
+
+The application provides a unified interface for capturing and analyzing data streams, with features such as device filtering, efficient device enumeration.
 
 ![Wiretap Main Interface](img/wiretap1.png)
-*Main interface showing multiple active listeners and data monitoring*
+*Main interface with multiple active listeners and data monitor*.
 
 ![Add Listener Dialog](img/wiretap2.png)  
-*Intuitive listener configuration dialog*
+*Intuitive listener configuration dialog*.
 
 ## Features
 
 ### Supported Protocols
 
-- **TCP Sockets**: Monitor TCP server connections with configurable IP binding and port settings
-- **UDP Packets**: Capture UDP broadcasts and unicast messages on any port
-- **Named Pipes**: Windows inter-process communication monitoring for local applications
-- **Serial COM Ports**: Full serial communication support with customizable baud rates, data bits, parity, and stop bits
-- **USB Devices**: Intelligent detection and monitoring of development hardware (Arduino, ESP32, sensors, etc.)
+- **TCP Sockets**: Monitor TCP server connections with configurable IP binding and port settings.
+- **UDP Packets**: Capture UDP broadcasts and unicast messages on any port.
+- **Named Pipes**: Windows inter-process communication monitoring for local applications.
+- **Serial COM Ports**: Full serial communication support with customizable baud rates, data bits, parity, and stop bits.
+- **USB Devices**: Intelligent detection and monitoring of development hardware (Arduino, ESP32, sensors, etc.).
 
 ### Modern User Experience
 
-- **WinUI 3**: Native Windows 11 styling with fluent design principles
-- **Real-time updates**: Live data display with automatic scrolling and timestamps
-- **Status indicators**: Color-coded connection states and activity monitoring
+- **WinUI 3**: Native Windows 11 styling with fluent design principles.
+- **Real-time updates**: Live data display with automatic scrolling and timestamps.
+- **Status indicators**: Color-coded connection states and activity monitoring.
 
 ### Developer-Friendly Tools
 
-- **Testing Script**: PowerShell testing script for all the supported protocols  
+- **Testing Script**: PowerShell testing script for all the supported protocols.
 - **Smart USB Device Recognition**: Automatically detects and lists only relevant development hardware using a built-in vendor database.
 
 ## User Guide
@@ -41,19 +45,19 @@ Wiretap is a Windows 11 application for monitoring real-time data from multiple 
 ### Managing Listeners
 
 - **Monitoring** is enabled by default, but may be paused globally or per listener with the ▶ and ⏸ buttons.
-- **Remove Listeners**: Click the "×" button to delete unwanted listeners
+- **Remove Listeners**: Click the "×" button to delete unwanted listeners.
 
 ### Data Monitoring
 
-- **Live Updates**: Incoming data appears instantly with timestamps
-- **Source Identification**: Each message shows which listener received it
+- **Live Updates**: Incoming data appears instantly with timestamps.
+- **Source Identification**: Each message shows which listener received it.
 - **Auto-Scroll**: New messages automatically scroll into view, but the view can be fixed in place by scrolling down. Use the ↑ button to scroll to the top and resume scrolling.
 
 ### Tips
 
-- **Check Firewalls**: Ensure Windows Firewall allows Wiretap network access
-- **Test Connections**: Use the included test script to verify your setup and identify problems
-- **Device Detection**: Connect hardware before starting listeners for best detection
+- **Check Firewalls**: Ensure Windows Firewall allows Wiretap network access.
+- **Test Connections**: Use the included test script to verify your setup and identify problems.
+- **Device Detection**: Connect hardware before starting listeners for best detection.
 
 ## Implementation & Architecture
 
@@ -96,9 +100,9 @@ Building via Visual Studio is simple: just clone the repository, open it in Visu
 
 The project uses the following NuGet packages:
 
-- **Microsoft.WindowsAppSDK** (1.7.250606001) - WinUI 3 and Windows App SDK
-- **System.IO.Ports** (9.0.7) - Serial port communication
-- **System.Management** (9.0.7) - WMI queries for USB device detection
+- **Microsoft.WindowsAppSDK** (1.7.250606001) - WinUI 3 and Windows App SDK.
+- **System.IO.Ports** (9.0.7) - Serial port communication.
+- **System.Management** (9.0.7) - WMI queries for USB device detection.
 
 ## Testing
 
@@ -155,9 +159,9 @@ Then test it by adding a COM listener on port "COM99", and run the test script:
 
 USB testing requires real hardware. Recommended devices:
 
-- **Arduino Uno/Nano** - Common and well supported
-- **ESP32 Dev Board** - WiFi + Bluetooth + Serial
-- **FTDI USB-to-Serial** - Professional grade converter
+- **Arduino Uno/Nano** - Common and well supported.
+- **ESP32 Dev Board** - WiFi + Bluetooth + Serial.
+- **FTDI USB-to-Serial** - Professional grade converter.
 
 **Arduino Test Sketch:**
 
@@ -184,4 +188,4 @@ void loop() {
 
 ## License
 
-This project is licensed under the [**CC BY-NC-SA 4.0**](https://creativecommons.org/licenses/by-nc-sa/4.0/) license.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
