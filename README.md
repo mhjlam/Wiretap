@@ -6,10 +6,10 @@ Wiretap is suitable for tasks including debugging network protocols, monitoring 
 
 The application provides a unified interface for capturing and analyzing data streams, with features such as device filtering, efficient device enumeration.
 
-![Wiretap Main Interface](img/wiretap1.png)
+![Wiretap Main Interface](media/wiretap1.png)
 *Main interface with multiple active listeners and data monitor*.
 
-![Add Listener Dialog](img/wiretap2.png)  
+![Add Listener Dialog](media/wiretap2.png)  
 *Intuitive listener configuration dialog*.
 
 ## Features
