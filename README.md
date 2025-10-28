@@ -1,16 +1,27 @@
 # Wiretap
 
+**Incoming Data Monitor**
+
+> Maurits Lam  
+> 2025
+
+<p align="center">
+  <img src="media/wiretap1.png" alt="Main interface" height="400"/>
+  <br/>
+   <em>Main interface with multiple active listeners and data monitor.</em>
+</p>
+
 Wiretap is a `Windows 11` application for monitoring real-time data from multiple sources. It supports `TCP`/`UDP` networks, named `pipes`, serial `COM` ports, and `USB` devices. 
 
 Wiretap is suitable for tasks including debugging network protocols, monitoring serial and USB devices, and working with embedded hardware interfaces.
 
 The application provides a unified interface for capturing and analyzing data streams, with features such as device filtering, efficient device enumeration.
 
-![Wiretap Main Interface](media/wiretap1.png)
-*Main interface with multiple active listeners and data monitor*.
-
-![Add Listener Dialog](media/wiretap2.png)  
-*Intuitive listener configuration dialog*.
+<p align="center">
+  <img src="media/wiretap2.png" alt="Add listener dialog" height="400"/>
+  <br/>
+   <em>Intuitive listener configuration dialog.</em>
+</p>
 
 ## Features
 
