@@ -10,21 +10,14 @@ using Wiretap.Services;
 
 namespace Wiretap.ViewModels
 {
-    public class ListenerMessageEventArgs : EventArgs
+    public class ListenerMessageEventArgs(BaseListener listener, string source, string message) : EventArgs
     {
-        public BaseListener Listener { get; }
-        public string Source { get; }
-        public string Message { get; }
-        
-        public ListenerMessageEventArgs(BaseListener listener, string source, string message)
-        {
-            Listener = listener;
-            Source = source;
-            Message = message;
-        }
-    }
+		public BaseListener Listener { get; } = listener;
+		public string Source { get; } = source;
+		public string Message { get; } = message;
+	}
 
-    public class MainWindowViewModel : NotifyPropertyChangedBase
+    public partial class MainWindowViewModel : NotifyPropertyChangedBase
     {
         private BaseListener? _selectedListener;
         private IncomingMessage? _selectedMessage;

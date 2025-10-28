@@ -46,6 +46,7 @@ namespace Wiretap.Views
 
             // Set up visual effects service with status indicator reference
             var visualEffectsService = ServiceContainer.Instance.VisualEffectsService;
+
             if (visualEffectsService is VisualEffectsService visualService)
             {
                 visualService.SetStatusIndicator(StatusIndicator);
@@ -68,27 +69,25 @@ namespace Wiretap.Views
 
         private void MessagesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var currentSelection = MessagesListView.SelectedItem as IncomingMessage;
-            
-            if (currentSelection != null)
-            {
-                // Copy message content to clipboard
-                try
-                {
-                    var dataPackage = new Windows.ApplicationModel.DataTransfer.DataPackage();
-                    dataPackage.SetText(currentSelection.Message);
-                    Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(dataPackage);
-                }
-                catch
-                {
-                    // Silently handle clipboard errors
-                }
-                
-                // Notify parent and start flash effect
-                MessageSelected?.Invoke(this, currentSelection);
-                _messageService?.StartMessageFlash(currentSelection);
-            }
-        }
+			if (MessagesListView.SelectedItem is IncomingMessage currentSelection)
+			{
+				// Copy message content to clipboard
+				try
+				{
+					var dataPackage = new Windows.ApplicationModel.DataTransfer.DataPackage();
+					dataPackage.SetText(currentSelection.Message);
+					Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(dataPackage);
+				}
+				catch
+				{
+					// Silently handle clipboard errors
+				}
+
+				// Notify parent and start flash effect
+				MessageSelected?.Invoke(this, currentSelection);
+				_messageService?.StartMessageFlash(currentSelection);
+			}
+		}
 
         private void ScrollToTop_Click(object sender, RoutedEventArgs e)
         {
@@ -184,7 +183,10 @@ namespace Wiretap.Views
 
         private T? FindChildOfType<T>(DependencyObject parent) where T : DependencyObject
         {
-            if (parent == null) return null;
+            if (parent == null)
+            {
+                return null;
+            }
 
             for (int i = 0; i < Microsoft.UI.Xaml.Media.VisualTreeHelper.GetChildrenCount(parent); i++)
             {
@@ -206,11 +208,14 @@ namespace Wiretap.Views
 
         // Simple event handlers
         private void MessagesListView_Tapped(object sender, TappedRoutedEventArgs e) { }
+
         private void MessagesListView_KeyDown(object sender, KeyRoutedEventArgs e) { }
+
         private void MessagesListView_RightTapped(object sender, RightTappedRoutedEventArgs e) 
         { 
             e.Handled = true; 
         }
+
         private void MessagesListView_Loaded(object sender, RoutedEventArgs e) 
         { 
             AttachScrollViewerEvents(); 

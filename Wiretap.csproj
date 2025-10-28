@@ -12,6 +12,12 @@
     <EnableMsixTooling>true</EnableMsixTooling>
     <Nullable>enable</Nullable>
     
+    <!-- Windows App SDK configuration for unpackaged apps -->
+    <WindowsPackageType>None</WindowsPackageType>
+    
+    <!-- Disable auto-generated Main method -->
+    <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+ 
     <!-- Keep bin and obj folders at root level -->
     <OutputPath>bin\$(Configuration)\$(TargetFramework)\$(Platform)\</OutputPath>
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\$(TargetFramework)\</IntermediateOutputPath>
@@ -20,6 +26,7 @@
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
     <EnableDefaultPageItems>false</EnableDefaultPageItems>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <!-- Assets for MSIX packaging (Package.appxmanifest expects these in root Assets/) -->
@@ -44,10 +51,11 @@
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
   </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="2.0.1" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4654" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250606001" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251003001" />
     <PackageReference Include="System.IO.Ports" Version="9.0.7" />
     <PackageReference Include="System.Management" Version="9.0.7" />
   </ItemGroup>

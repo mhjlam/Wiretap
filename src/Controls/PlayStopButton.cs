@@ -114,14 +114,18 @@ namespace Wiretap.Controls
             {
                 // Show Play icon when listeners are active/running (green)
                 _symbolIcon.Symbol = Symbol.Play;
-                _symbolIcon.Foreground = new SolidColorBrush(Microsoft.UI.Colors.Green);
-            }
+                _symbolIcon.Foreground = new SolidColorBrush(Colors.Green);
+
+                ToolTipService.SetToolTip(_innerButton, "Stop");
+			}
             else
             {
                 // Show Pause icon when listeners are paused/stopped (orange)
                 _symbolIcon.Symbol = Symbol.Pause;
-                _symbolIcon.Foreground = new SolidColorBrush(Microsoft.UI.Colors.Orange);
-            }
+                _symbolIcon.Foreground = new SolidColorBrush(Colors.Orange);
+
+				ToolTipService.SetToolTip(_innerButton, "Start");
+			}
         }
     }
 }

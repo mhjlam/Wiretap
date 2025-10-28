@@ -11,10 +11,12 @@ namespace Wiretap.Models
         public string? ErrorMessage { get; set; }
         public Exception? Exception { get; set; }
 
-        public static ListenerOperationResult CreateSuccess()
-            => new() { Success = true };
+        public static ListenerOperationResult CreateSuccess() => new() { 
+            Success = true
+        };
 
-        public static ListenerOperationResult CreateFailure(string errorMessage, Exception? exception = null)
-            => new() { Success = false, ErrorMessage = errorMessage, Exception = exception };
+        public static ListenerOperationResult CreateFailure(string errorMessage, Exception? exception = null) => new() { 
+            Success = false, ErrorMessage = errorMessage, Exception = exception
+        };
     }
 }

@@ -1,5 +1,4 @@
 using Microsoft.UI.Dispatching;
-using System;
 using System.ComponentModel;
 using System.Threading;
 
@@ -8,7 +7,7 @@ namespace Wiretap.Common
     public abstract class NotifyPropertyChangedBase : INotifyPropertyChanged
     {
         private DispatcherQueue? _dispatcherQueue;
-        private readonly ThreadLocal<bool> _isRaisingPropertyChanged = new ThreadLocal<bool>(() => false);
+        private readonly ThreadLocal<bool> _isRaisingPropertyChanged = new(() => false);
 
         protected NotifyPropertyChangedBase()
         {

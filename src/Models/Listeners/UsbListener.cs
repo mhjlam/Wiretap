@@ -9,7 +9,6 @@ using System.Management;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Wiretap.Models;
 
 namespace Wiretap.Models.Listeners
 {
@@ -138,11 +137,15 @@ namespace Wiretap.Models.Listeners
         {
             // Only refresh if someone is likely to using USB devices
             if (_deviceCache.IsEmpty && DateTime.Now - _lastFailureTime > TimeSpan.FromMinutes(5))
+            {
                 return;
+            }
 
             // Don't refresh too often if we're having failures
             if (_consecutiveFailures > 3 && DateTime.Now - _lastFailureTime < TimeSpan.FromMinutes(1))
+            {
                 return;
+            }
 
             try
             {
@@ -158,14 +161,14 @@ namespace Wiretap.Models.Listeners
         {
             const string cacheKey = "usb_devices";
             
-            if (_deviceCache.TryGetValue(cacheKey, out var cachedDevices) &&
-                _cacheTimestamps.TryGetValue(cacheKey, out var timestamp) &&
-                DateTime.Now - timestamp < CacheExpiry)
+            if (_deviceCache.TryGetValue(cacheKey, out var cachedDevices) 
+            &&  _cacheTimestamps.TryGetValue(cacheKey, out var timestamp) 
+            &&  DateTime.Now - timestamp < CacheExpiry)
             {
                 return cachedDevices;
             }
             
-            return new List<UsbDeviceInfo>();
+            return [];
         }
 
         public static List<UsbDeviceInfo> GetAvailableUsbDevices()
@@ -194,7 +197,7 @@ namespace Wiretap.Models.Listeners
                 Debug.WriteLine($"Synchronous USB enumeration failed: {ex.Message}");
             }
 
-            return new List<UsbDeviceInfo>();
+            return [];
         }
 
         public static async Task<List<UsbDeviceInfo>> GetAvailableUsbDevicesAsync(bool useCache = true)
@@ -244,7 +247,7 @@ namespace Wiretap.Models.Listeners
                 var stopwatch = Stopwatch.StartNew();
                 var devices = await EnumerateUsbDevicesWithTimeout();
                 
-                devices = devices.OrderBy(d => d.Name).ToList();
+                devices = [.. devices.OrderBy(d => d.Name)];
                 
                 // Update cache
                 _deviceCache[cacheKey] = devices;
@@ -276,7 +279,7 @@ namespace Wiretap.Models.Listeners
                 _deviceCache[cacheKey] = new List<UsbDeviceInfo>();
                 _cacheTimestamps[cacheKey] = DateTime.Now.AddMinutes(-4); // Will expire in 1 minute instead of 5
                 
-                return new List<UsbDeviceInfo>();
+                return [];
             }
             finally
             {
@@ -320,10 +323,14 @@ namespace Wiretap.Models.Listeners
                         var status = device["Status"]?.ToString();
 
                         if (string.IsNullOrEmpty(deviceId) || string.IsNullOrEmpty(name) || status != "OK")
+                        {
                             continue;
-                        
+                        }
+
                         if (IsSystemDevice(deviceId, name, service))
+                        {
                             continue;
+                        }
 
                         devices.Add(new UsbDeviceInfo
                         {
@@ -339,14 +346,14 @@ namespace Wiretap.Models.Listeners
                 }
                 
                 return devices;
-            }, cts.Token);
+            }, 
+            cts.Token);
         }
 
         public override bool IsValid()
         {
             var availableDevices = GetAvailableUsbDevices();
-            return !string.IsNullOrWhiteSpace(DeviceId) && 
-                   availableDevices.Any(d => d.DeviceId == DeviceId);
+            return !string.IsNullOrWhiteSpace(DeviceId) && availableDevices.Any(d => d.DeviceId == DeviceId);
         }
 
         public override string GetDisplayInfo()
@@ -356,8 +363,10 @@ namespace Wiretap.Models.Listeners
 
         public override async Task<ListenerOperationResult> StartListeningAsync()
         {
-            if (IsListening) 
+            if (IsListening)
+            {
                 return ListenerOperationResult.CreateSuccess();
+            }
 
             try
             {
@@ -386,8 +395,10 @@ namespace Wiretap.Models.Listeners
 
         public override async Task<ListenerOperationResult> StopListeningAsync()
         {
-            if (!IsListening) 
+            if (!IsListening)
+            {
                 return ListenerOperationResult.CreateSuccess();
+            }
 
             await Task.CompletedTask; // Suppress CS1998 warning
 
@@ -524,10 +535,12 @@ namespace Wiretap.Models.Listeners
             
             try
             {
-                // Create and configure serial port
-                serialPort = new SerialPort(comPort, 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One);
-                serialPort.ReadTimeout = 500;
-                serialPort.Open();
+				// Create and configure serial port
+				serialPort = new SerialPort(comPort, 9600, Parity.None, 8, StopBits.One)
+				{
+					ReadTimeout = 500
+				};
+				serialPort.Open();
                 
                 OnMessageReceived($"Reading data from USB device via {comPort}");
                 
@@ -605,7 +618,7 @@ namespace Wiretap.Models.Listeners
             string bufferContent = buffer.ToString();
             
             // Look for line endings
-            var lines = bufferContent.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            var lines = bufferContent.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
             
             if (lines.Length > 0)
             {
@@ -848,7 +861,9 @@ namespace Wiretap.Models.Listeners
         public static string GetPerformanceStats()
         {
             if (_enumerationTimes.IsEmpty)
+            {
                 return "No USB enumerations performed yet";
+            }
                 
             var times = _enumerationTimes.ToArray();
             var avgMs = times.Select(t => t.TotalMilliseconds).Average();

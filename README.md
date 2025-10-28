@@ -18,10 +18,39 @@ Wiretap is suitable for tasks including debugging network protocols, monitoring 
 The application provides a unified interface for capturing and analyzing data streams, with features such as device filtering, efficient device enumeration.
 
 <p align="center">
-  <img src="media/wiretap2.png" alt="Add listener dialog" height="400"/>
+<img src="media/wiretap2.png" alt="Add listener dialog" height="400"/>
   <br/>
    <em>Intuitive listener configuration dialog.</em>
 </p>
+
+## Development Setup
+
+### Quick Start
+```bash
+# 1. Install Windows App Runtime (REQUIRED - prevents COM errors)
+winget install Microsoft.WindowsAppRuntime.1.8
+
+# 2. Clone and build
+git clone https://github.com/mhjlam/Wiretap.git
+cd Wiretap
+dotnet build
+
+# 3. Run
+dotnet run --runtime win-x64
+```
+
+### Prerequisites
+- **Visual Studio 2022** (17.8+) with .NET Desktop Development workload
+- **Windows App Runtime 1.8** (must match the 1.8 SDK version used in project)
+- **.NET 8 SDK**
+
+### "Class not registered (0x80040154)" Error?
+This means Windows App Runtime version mismatch. Fix with:
+```bash
+winget install Microsoft.WindowsAppRuntime.1.8
+# Restart Visual Studio, then:
+dotnet clean && dotnet build
+```
 
 ## Features
 
@@ -98,20 +127,11 @@ Wiretap follows a clean MVVM (Model-View-ViewModel) architecture built on .NET 8
 
 ## Build Instructions
 
-Building via Visual Studio is simple: just clone the repository, open it in Visual Studio, build the solution, and run the program!
-
-### Prerequisites
-
-- **Visual Studio 2022** (17.8 or later) with these workloads:
-  - .NET Desktop Development
-  - Windows Application Development
-- **Windows 11 SDK** (10.0.22621.0 or later)
-
 ### Dependencies
 
 The project uses the following NuGet packages:
 
-- **Microsoft.WindowsAppSDK** (1.7.250606001) - WinUI 3 and Windows App SDK.
+- **Microsoft.WindowsAppSDK** (1.8.251003001) - WinUI 3 and Windows App SDK.
 - **System.IO.Ports** (9.0.7) - Serial port communication.
 - **System.Management** (9.0.7) - WMI queries for USB device detection.
 
@@ -192,10 +212,11 @@ void loop() {
 
 ### Troubleshooting
 
-- **Firewall Issues**: Disable Windows Firewall for Wiretap and other test software like VSPE.
-- **Port Conflicts**: Use `netstat -an` to check for port usage conflicts.
-- **COM Port Access**: Ensure no other applications are using the same COM port. In some cases fixing COM port detection or usage requires removal from Window Device Manager and restarting Windows.
-- **USB Detection**: Check Windows Device Manager to verify device recognition.
+- **COM Registration Errors**: Run `.\scripts\verify-environment.ps1 -Fix` to install Windows App Runtime 1.8
+- **Firewall Issues**: Disable Windows Firewall for Wiretap and test software
+- **Port Conflicts**: Use `netstat -an` to check for port usage conflicts
+- **COM Port Access**: Ensure no other applications are using the same COM port
+- **USB Detection**: Check Windows Device Manager to verify device recognition
 
 ## License
 

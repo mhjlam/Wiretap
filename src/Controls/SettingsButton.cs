@@ -4,7 +4,7 @@ using Microsoft.UI.Xaml.Media;
 
 namespace Wiretap.Controls
 {
-    public sealed class SettingsButton : Button
+    public sealed partial class SettingsButton : Button
     {
         public SettingsButton()
         {

@@ -13,7 +13,9 @@ namespace Wiretap.Controls
         public CloseButton()
         {
             CreateButton();
-        }
+
+            ToolTipService.SetToolTip(this, "Remove");
+		}
 
         private void CreateButton()
         {

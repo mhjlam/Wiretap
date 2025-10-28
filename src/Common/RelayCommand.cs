@@ -32,8 +32,9 @@ namespace Wiretap.Common
         /// <param name="canExecute">The execution status logic.</param>
         public RelayCommand(Action execute, Func<bool>? canExecute = null)
         {
-            if (execute == null) throw new ArgumentNullException(nameof(execute));
-            _execute = _ => execute();
+			ArgumentNullException.ThrowIfNull(execute);
+
+			_execute = _ => execute();
             _canExecute = canExecute != null ? _ => canExecute() : null;
         }
 
@@ -74,18 +75,12 @@ namespace Wiretap.Common
     /// A strongly-typed version of RelayCommand.
     /// </summary>
     /// <typeparam name="T">The type of the command parameter.</typeparam>
-    public class RelayCommand<T> : ICommand
+    public partial class RelayCommand<T>(Action<T?> execute, Predicate<T?>? canExecute = null) : ICommand
     {
-        private readonly Action<T?> _execute;
-        private readonly Predicate<T?>? _canExecute;
+        private readonly Action<T?> _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+        private readonly Predicate<T?>? _canExecute = canExecute;
 
-        public RelayCommand(Action<T?> execute, Predicate<T?>? canExecute = null)
-        {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute;
-        }
-
-        public event EventHandler? CanExecuteChanged;
+		public event EventHandler? CanExecuteChanged;
 
         public bool CanExecute(object? parameter)
         {
@@ -134,7 +129,10 @@ namespace Wiretap.Common
 
         public async void Execute(object? parameter)
         {
-            if (!CanExecute(parameter)) return;
+            if (!CanExecute(parameter))
+            {
+                return;
+            }
 
             _isExecuting = true;
             RaiseCanExecuteChanged();

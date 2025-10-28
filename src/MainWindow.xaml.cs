@@ -2,13 +2,10 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 using System;
-using Wiretap.Helpers;
 using Wiretap.Models;
 using Wiretap.Services;
 using Wiretap.ViewModels;
-using Windows.Graphics;
 
 namespace Wiretap
 {
@@ -27,7 +24,7 @@ namespace Wiretap
             InitializeComponent();
             
             ViewModel = new MainWindowViewModel();
-            ViewModel.SetDispatcher(this.DispatcherQueue);
+            ViewModel.SetDispatcher(DispatcherQueue);
             
             // Initialize services
             InitializeServices();
@@ -41,13 +38,13 @@ namespace Wiretap
             SetupWindow();
 
             // Enable keyboard events on the main grid
-            this.Content.Focus(FocusState.Programmatic);
+            Content.Focus(FocusState.Programmatic);
         }
 
         private void InitializeServices()
         {
             // Initialize service container
-            ServiceContainer.Instance.Initialize(ViewModel, this.DispatcherQueue);
+            ServiceContainer.Instance.Initialize(ViewModel, DispatcherQueue);
             
             _messageService = ServiceContainer.Instance.MessageService;
             _visualEffectsService = ServiceContainer.Instance.VisualEffectsService;
@@ -80,7 +77,10 @@ namespace Wiretap
 
         private void CenterWindowOnScreen()
         {
-            if (_appWindow == null) return;
+            if (_appWindow == null)
+            {
+                return;
+            }
 
             // Get the display area of the current monitor
             var displayArea = Microsoft.UI.Windowing.DisplayArea.GetFromWindowId(_appWindow.Id, DisplayAreaFallback.Primary);
@@ -114,7 +114,10 @@ namespace Wiretap
         // Event handlers for view communication
         private async void OnAddListenerRequested(object? sender, EventArgs e)
         {
-            if (_dialogService == null) return;
+            if (_dialogService == null)
+            {
+                return;
+            }
 
             var result = await _dialogService.ShowAddListenerDialogAsync(this.Content.XamlRoot);
             if (result == ContentDialogResult.Primary)
@@ -137,7 +140,10 @@ namespace Wiretap
 
         private async void OnRemoveListenerRequested(object? sender, BaseListener listener)
         {
-            if (_dialogService == null || listener == null) return;
+            if (_dialogService == null || listener == null)
+            {
+                return;
+            }
 
             var result = await _dialogService.ShowRemoveListenerConfirmationAsync(listener.Name, this.Content.XamlRoot);
             if (result == ContentDialogResult.Primary)

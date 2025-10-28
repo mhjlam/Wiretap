@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.IO.Ports;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -51,15 +50,15 @@ namespace Wiretap.ViewModels
             try
             {
                 AvailableProtocols = Enum.GetValues<ListenerProtocol>().ToList();
-                CurrentProperties = new List<PropertyInfo>();
+                CurrentProperties = [];
                 CreateListenerForProtocol();
             }
             catch (Exception ex)
             {
                 // Handle any errors during initialization
                 System.Diagnostics.Debug.WriteLine($"Error initializing AddListenerViewModel: {ex}");
-                AvailableProtocols = new List<ListenerProtocol> { ListenerProtocol.UDP, ListenerProtocol.TCP };
-                CurrentProperties = new List<PropertyInfo>();
+                AvailableProtocols = [ListenerProtocol.UDP, ListenerProtocol.TCP];
+                CurrentProperties = [];
                 CurrentListener = null;
             }
         }
@@ -97,12 +96,12 @@ namespace Wiretap.ViewModels
             {
                 if (CurrentListener == null)
                 {
-                    CurrentProperties = new List<PropertyInfo>();
+                    CurrentProperties = [];
                     return;
                 }
 
                 var type = CurrentListener.GetType();
-                CurrentProperties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                CurrentProperties = [.. type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                     .Where(p => p.CanRead && p.CanWrite && 
                                p.Name != nameof(BaseListener.Protocol) && 
                                p.Name != nameof(BaseListener.Status) &&
@@ -110,8 +109,7 @@ namespace Wiretap.ViewModels
                                p.Name != nameof(BaseListener.DisplayInfo) &&
                                p.Name != nameof(BaseListener.Name) && // Hide Name since it's auto-generated
                                p.Name != "BindAddress") // Hide BindAddress since it's now fixed
-                    .OrderBy(p => p.PropertyType == typeof(string) ? 0 : 1) // String properties first (like PortName, PipeName)
-                    .ToList();
+                    .OrderBy(p => p.PropertyType == typeof(string) ? 0 : 1)];
 
                 OnPropertyChanged(nameof(CurrentProperties));
             }
@@ -119,7 +117,7 @@ namespace Wiretap.ViewModels
             {
                 // Handle any errors during property reflection
                 System.Diagnostics.Debug.WriteLine($"Error updating properties: {ex}");
-                CurrentProperties = new List<PropertyInfo>();
+                CurrentProperties = [];
                 OnPropertyChanged(nameof(CurrentProperties));
             }
         }
@@ -167,15 +165,18 @@ namespace Wiretap.ViewModels
 
         public static List<int> GetValidBaudRates()
         {
-            return new List<int> 
-            { 
-                300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200, 230400, 460800, 921600 
-            };
+            return [
+                300,    600,    1200,
+                2400,   4800,   9600,
+                14400,  19200,  28800,
+                38400,  57600,  115200,
+                230400, 460800, 921600
+            ];
         }
 
         public static List<int> GetValidDataBits()
         {
-            return new List<int> { 5, 6, 7, 8 };
+            return [5, 6, 7, 8];
         }
 
         public static List<UsbDeviceInfo> GetAvailableUsbDevices()

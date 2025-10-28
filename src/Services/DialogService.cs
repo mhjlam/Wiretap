@@ -8,157 +8,158 @@ using Wiretap.ViewModels;
 
 namespace Wiretap.Services
 {
-    public class DialogService : IDialogService
-    {
-        public async Task<ContentDialogResult> ShowAddListenerDialogAsync(XamlRoot xamlRoot)
-        {
-            var viewModel = new AddListenerViewModel();
-            var dialogContent = UIControlFactory.CreateAddListenerContent(viewModel, null!);
-            
-            var dialog = new ContentDialog()
-            {
-                Title = "Add New Listener",
-                Content = dialogContent,
-                PrimaryButtonText = "Add",
-                CloseButtonText = "Cancel",
-                DefaultButton = ContentDialogButton.Primary,
-                XamlRoot = xamlRoot
-            };
+	public class DialogService : IDialogService
+	{
+		public async Task<ContentDialogResult> ShowAddListenerDialogAsync(XamlRoot xamlRoot)
+		{
+			var viewModel = new AddListenerViewModel();
+			var dialogContent = UIControlFactory.CreateAddListenerContent(viewModel, null!);
 
-            dialog.IsPrimaryButtonEnabled = viewModel.IsValid;
-            viewModel.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(AddListenerViewModel.IsValid))
-                {
-                    dialog.IsPrimaryButtonEnabled = viewModel.IsValid;
-                }
-            };
+			var dialog = new ContentDialog
+			{
+				Title = "Add New Listener",
+				Content = dialogContent,
+				PrimaryButtonText = "Add",
+				CloseButtonText = "Cancel",
+				DefaultButton = ContentDialogButton.Primary,
+				XamlRoot = xamlRoot,
+				IsPrimaryButtonEnabled = viewModel.IsValid
+			};
 
-            var result = await dialog.ShowAsync().AsTask().ConfigureAwait(false);
-            
-            // Store the result listener for retrieval
-            if (result == ContentDialogResult.Primary && viewModel.CurrentListener != null)
-            {
-                LastCreatedListener = viewModel.CurrentListener;
-            }
-            else
-            {
-                LastCreatedListener = null;
-            }
+			viewModel.PropertyChanged += (s, e) =>
+			{
+				if (e.PropertyName == nameof(AddListenerViewModel.IsValid))
+				{
+					dialog.IsPrimaryButtonEnabled = viewModel.IsValid;
+				}
+			};
 
-            return result;
-        }
+			var result = await dialog.ShowAsync().AsTask().ConfigureAwait(false);
 
-        public async Task<ContentDialogResult> ShowRemoveListenerConfirmationAsync(string listenerName, XamlRoot xamlRoot)
-        {
-            var dialog = new ContentDialog()
-            {
-                Title = "Remove Listener",
-                Content = $"Are you sure you want to remove the listener '{listenerName}'?",
-                PrimaryButtonText = "Remove",
-                CloseButtonText = "Cancel",
-                DefaultButton = ContentDialogButton.Close,
-                XamlRoot = xamlRoot
-            };
+			// Store the result listener for retrieval
+			if (result == ContentDialogResult.Primary && viewModel.CurrentListener != null)
+			{
+				LastCreatedListener = viewModel.CurrentListener;
+			}
+			else
+			{
+				LastCreatedListener = null;
+			}
 
-            return await dialog.ShowAsync().AsTask().ConfigureAwait(false);
-        }
+			return result;
+		}
 
-        public async Task<bool> ShowSettingsDialogAsync(Window owner)
-        {
-            try
-            {
-                var settingsService = ServiceContainer.Instance.SettingsService;
-                if (settingsService == null) return false;
+		public async Task<ContentDialogResult> ShowRemoveListenerConfirmationAsync(string listenerName, XamlRoot xamlRoot)
+		{
+			var dialog = new ContentDialog()
+			{
+				Title = "Remove Listener",
+				Content = $"Are you sure you want to remove the listener '{listenerName}'?",
+				PrimaryButtonText = "Remove",
+				CloseButtonText = "Cancel",
+				DefaultButton = ContentDialogButton.Close,
+				XamlRoot = xamlRoot
+			};
 
-                // Load settings on background thread
-                var currentSettings = await settingsService.LoadSettingsAsync().ConfigureAwait(false);
-                
-                // Use TaskCompletionSource to properly marshal dialog to UI thread
-                var tcs = new TaskCompletionSource<ContentDialogResult>();
-                
-                owner.DispatcherQueue.TryEnqueue(async () =>
-                {
-                    try
-                    {
-                        var settingsContent = CreateSettingsDialogContent(currentSettings);
+			return await dialog.ShowAsync().AsTask().ConfigureAwait(false);
+		}
 
-                        var dialog = new ContentDialog()
-                        {
-                            Title = "Settings",
-                            Content = settingsContent,
-                            PrimaryButtonText = "Save",
-                            CloseButtonText = "Cancel",
-                            DefaultButton = ContentDialogButton.Primary,
-                            XamlRoot = owner.Content.XamlRoot
-                        };
+		public async Task<bool> ShowSettingsDialogAsync(Window owner)
+		{
+			try
+			{
+				var settingsService = ServiceContainer.Instance.SettingsService;
+				if (settingsService == null) return false;
 
-                        // Show dialog on UI thread
-                        var result = await dialog.ShowAsync();
-                        tcs.SetResult(result);
-                    }
-                    catch (Exception ex)
-                    {
-                        tcs.SetException(ex);
-                    }
-                });
+				// Load settings on background thread
+				var currentSettings = await settingsService.LoadSettingsAsync().ConfigureAwait(false);
 
-                var dialogResult = await tcs.Task;
-                
-                if (dialogResult == ContentDialogResult.Primary)
-                {
-                    // Save settings on background thread
-                    await settingsService.SaveSettingsAsync(currentSettings).ConfigureAwait(false);
-                    return true;
-                }
-                
-                return false;
-            }
-            catch
-            {
-                return false;
-            }
-        }
+				// Use TaskCompletionSource to properly marshal dialog to UI thread
+				var tcs = new TaskCompletionSource<ContentDialogResult>();
 
-        private FrameworkElement CreateSettingsDialogContent(AppSettings settings)
-        {
-            var mainGrid = new Grid();
-            mainGrid.MinWidth = 400;
-            mainGrid.MinHeight = 150;
+				owner.DispatcherQueue.TryEnqueue(async () =>
+				{
+					try
+					{
+						var settingsContent = CreateSettingsDialogContent(currentSettings);
 
-            var stackPanel = new StackPanel { Spacing = 20, Margin = new Thickness(20) };
+						var dialog = new ContentDialog()
+						{
+							Title = "Settings",
+							Content = settingsContent,
+							PrimaryButtonText = "Save",
+							CloseButtonText = "Cancel",
+							DefaultButton = ContentDialogButton.Primary,
+							XamlRoot = owner.Content.XamlRoot
+						};
 
-            // Connection Status Section
-            var connectionSection = new StackPanel { Spacing = 10 };
+						// Show dialog on UI thread
+						var result = await dialog.ShowAsync();
+						tcs.SetResult(result);
+					}
+					catch (Exception ex)
+					{
+						tcs.SetException(ex);
+					}
+				});
 
-            var connectionCheckBox = new CheckBox
-            {
-                Content = "Show connection status messages",
-                IsChecked = settings.Listeners.ShowConnectionStatus
-            };
-            
-            connectionCheckBox.Checked += (s, e) => settings.Listeners.ShowConnectionStatus = true;
-            connectionCheckBox.Unchecked += (s, e) => settings.Listeners.ShowConnectionStatus = false;
-            
-            connectionSection.Children.Add(connectionCheckBox);
+				var dialogResult = await tcs.Task;
 
-            var connectionDescription = new TextBlock
-            {
-                Text = "When enabled, displays messages when clients connect or disconnect from TCP, Named Pipe, and COM listeners.",
-                FontSize = 12,
-                Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Gray),
-                TextWrapping = TextWrapping.Wrap,
-                Margin = new Thickness(20, 5, 0, 0)
-            };
-            connectionSection.Children.Add(connectionDescription);
+				if (dialogResult == ContentDialogResult.Primary)
+				{
+					// Save settings on background thread
+					await settingsService.SaveSettingsAsync(currentSettings).ConfigureAwait(false);
+					return true;
+				}
 
-            stackPanel.Children.Add(connectionSection);
+				return false;
+			}
+			catch
+			{
+				return false;
+			}
+		}
 
-            mainGrid.Children.Add(stackPanel);
+		private FrameworkElement CreateSettingsDialogContent(AppSettings settings)
+		{
+			var mainGrid = new Grid
+			{
+				MinWidth = 400,
+				MinHeight = 150
+			};
 
-            return mainGrid;
-        }
+			var stackPanel = new StackPanel { Spacing = 20, Margin = new Thickness(20) };
 
-        public BaseListener? LastCreatedListener { get; private set; }
-    }
+			// Connection Status Section
+			var connectionSection = new StackPanel { Spacing = 10 };
+
+			var connectionCheckBox = new CheckBox
+			{
+				Content = "Show connection status messages",
+				IsChecked = settings.Listeners.ShowConnectionStatus
+			};
+
+			connectionCheckBox.Checked += (s, e) => settings.Listeners.ShowConnectionStatus = true;
+			connectionCheckBox.Unchecked += (s, e) => settings.Listeners.ShowConnectionStatus = false;
+
+			connectionSection.Children.Add(connectionCheckBox);
+
+			var connectionDescription = new TextBlock
+			{
+				Text = "When enabled, displays messages when clients connect or disconnect from TCP, Named Pipe, and COM listeners.",
+				FontSize = 12,
+				Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Gray),
+				TextWrapping = TextWrapping.Wrap,
+				Margin = new Thickness(20, 5, 0, 0)
+			};
+
+			connectionSection.Children.Add(connectionDescription);
+			stackPanel.Children.Add(connectionSection);
+			mainGrid.Children.Add(stackPanel);
+
+			return mainGrid;
+		}
+
+		public BaseListener? LastCreatedListener { get; private set; }
+	}
 }

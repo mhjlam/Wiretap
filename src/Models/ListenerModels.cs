@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Wiretap.Common;
 using Wiretap.Services;
@@ -42,7 +41,7 @@ namespace Wiretap.Models
     {
         private ListenerStatus _status = ListenerStatus.Disabled;
         private bool _isListening;
-        private readonly object _statusLock = new object();
+        private readonly object _statusLock = new();
 
         protected BaseListener()
         {
@@ -50,7 +49,7 @@ namespace Wiretap.Models
         }
 
         // Helper method to check if connection status messages should be shown
-        protected bool ShouldShowConnectionStatus()
+        protected static bool ShouldShowConnectionStatus()
         {
             try
             {
